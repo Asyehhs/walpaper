@@ -1,8 +1,11 @@
 const { execFile } = require("child_process");
+const Shell = require("node-powershell");
 
 module.exports = (path) => {
-  execFile(path, (err, data) => {
-    console.log(err);
-    console.log(data);
+  const ps = new Shell({
+    executionPolicy: "Bypass",
+    noProfile: true,
   });
+  ps.addCommand(`Start-Process -FilePath "${path}"`);
+  return ps.invoke();
 };
